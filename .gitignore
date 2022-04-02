@@ -1,3 +1,7 @@
 *.txt
 *.code-workspace
+.vscode
 src/Pf2cc.Lib/obj
+src/Pf2cc.Lib/bin
+src/Pf2cc.Console/obj
+src/Pf2cc.Console/bin
