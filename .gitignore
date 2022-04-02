@@ -5,3 +5,5 @@ src/Pf2cc.Lib/obj
 src/Pf2cc.Lib/bin
 src/Pf2cc.Console/obj
 src/Pf2cc.Console/bin
+test/Pf2cc.Lib.Tests/obj
+test/Pf2cc.Lib.Tests/bin
