@@ -69,25 +69,28 @@ public class AbilityScoreTest
     }
 
     [Fact]
-    public void TestAbilityArraySubtraction()
+    public void TestAbilityArrayMultiOps()
     {
         AbilityArray x = AbilityArray.Default;
-        AbilityArray y = AbilityArray.Zero with { Strength = 8, Charisma = 9 };
-        AbilityArray expected = new(2, 10, 10, 10, 10, 1);
+        AbilityArray y = AbilityArray.Zero with { Strength = (-2), Charisma = 5 };
+        AbilityArray expected = new(8, 10, 10, 10, 10, 15);
 
-        AbilityArray actual = x - y;
+        AbilityArray actual = x + y;
 
         Assert.Equal(actual, expected);
     }
 
     [Fact]
-    public void TestAbilityArrayMultiOps()
+    public void TestAbilityArrayBoosts()
     {
-        AbilityArray x = AbilityArray.Default;
-        AbilityArray y = AbilityArray.Zero with { Strength = -2, Charisma = 5 };
-        AbilityArray expected = new(8, 10, 10, 10, 10, 15);
+        AbilityArray x = AbilityArray.Default with { Strength = 18, Wisdom = 16 };
+        AbilityArray boosts =
+            AbilityArray.StrengthBoost + AbilityArray.WisdomBoost + AbilityArray.CharismaFlaw;
+        // should only be adding 1 to Strength
+        AbilityArray expected = 
+            AbilityArray.Default with { Strength = 19, Wisdom = 18, Charisma = 8 };
 
-        AbilityArray actual = x + y;
+        AbilityArray actual = x + boosts;
 
         Assert.Equal(actual, expected);
     }

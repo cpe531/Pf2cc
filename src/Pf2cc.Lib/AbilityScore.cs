@@ -29,24 +29,40 @@ public record AbilityArray(AbilityScore Strength, AbilityScore Dexterity, Abilit
     public static AbilityArray Default => new(10, 10, 10, 10, 10, 10);
     public static AbilityArray Zero => new(0, 0, 0, 0, 0, 0);
 
+    public static AbilityArray StrengthBoost => Zero with { Strength = 2 };
+    public static AbilityArray StrengthFlaw => Zero with { Strength = (-2) };
+    public static AbilityArray DexterityBoost => Zero with { Dexterity = 2 };
+    public static AbilityArray DexterityFlaw => Zero with { Dexterity = (-2) };
+    public static AbilityArray ConstitutionBoost => Zero with { Constitution = 2 };
+    public static AbilityArray ConstitutionFlaw => Zero with { Constitution = (-2) };
+    public static AbilityArray IntelligenceBoost => Zero with { Intelligence = 2 };
+    public static AbilityArray IntelligenceFlaw => Zero with { Intelligence = (-2) };
+    public static AbilityArray WisdomBoost => Zero with { Wisdom = 2 };
+    public static AbilityArray WisdomFlaw => Zero with { Wisdom = (-2) };
+    public static AbilityArray CharismaBoost => Zero with { Charisma = 2 };
+    public static AbilityArray CharismaFlaw => Zero with { Charisma = (-2) };
+
+
     public static AbilityArray operator +(AbilityArray x, AbilityArray y)
     {
         return new(
-            x.Strength + y.Strength, 
-            x.Dexterity + y.Dexterity,
-            x.Constitution + y.Constitution, 
-            x.Intelligence + y.Intelligence,
-            x.Wisdom + y.Wisdom, 
-            x.Charisma + y.Charisma);
+            AddBoostOr1(x.Strength, y.Strength), 
+            AddBoostOr1(x.Dexterity, y.Dexterity),
+            AddBoostOr1(x.Constitution, y.Constitution), 
+            AddBoostOr1(x.Intelligence, y.Intelligence),
+            AddBoostOr1(x.Wisdom, y.Wisdom), 
+            AddBoostOr1(x.Charisma, y.Charisma));
     }
-    public static AbilityArray operator -(AbilityArray x, AbilityArray y)
+
+    private static int AddBoostOr1(int ability, int boost)
     {
-        return new(
-            x.Strength - y.Strength, 
-            x.Dexterity - y.Dexterity,
-            x.Constitution - y.Constitution, 
-            x.Intelligence - y.Intelligence,
-            x.Wisdom - y.Wisdom, 
-            x.Charisma - y.Charisma);
+        if ((ability >= 18) && (boost > 0))
+        {
+            return ability + 1;
+        }
+        else
+        {
+            return ability + boost;
+        }
     }
 }
