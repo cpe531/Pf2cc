@@ -57,40 +57,46 @@ public class AbilityScoreTest
     }
 
     [Fact]
+    public void TestAbilityBoostAddition()
+    {
+        AbilityBoost x = AbilityBoost.StrengthBoost;
+        AbilityBoost y = AbilityBoost.CharismaBoost;
+        AbilityBoost z = AbilityBoost.WisdomFlaw;
+        AbilityBoost expected = new(2, 0, 0, 0, -2, 2);
+
+        AbilityBoost actual = x + y + z;
+
+        Assert.Equal(actual, expected);
+    }
+
+    [Fact]
     public void TestAbilityArrayAddition()
     {
-        AbilityArray x = AbilityArray.Default;
-        AbilityArray y = AbilityArray.Zero with { Strength = 8, Charisma = 9 };
-        AbilityArray expected = new(18, 10, 10, 10, 10, 19);
+        AbilityArray def = AbilityArray.Default;
+        AbilityBoost boost =
+            AbilityBoost.IntelligenceBoost + AbilityBoost.WisdomBoost + AbilityBoost.StrengthFlaw;
+        AbilityArray defExpected = new(8, 10, 10, 12, 12, 10);
 
-        AbilityArray actual = x + y;
+        AbilityArray high = new(10, 10, 10, 18, 18, 10);
+        AbilityArray highExpected = new(8, 10, 10, 19, 19, 10);
 
-        Assert.Equal(actual, expected);
+        AbilityArray defActual = def + boost;
+        AbilityArray highActual = high + boost;
+
+        Assert.Equal(defActual, defExpected);
+        Assert.Equal(highActual, highExpected);
     }
 
     [Fact]
-    public void TestAbilityArrayMultiOps()
+    public void TestVoluntaryFlaws()
     {
-        AbilityArray x = AbilityArray.Default;
-        AbilityArray y = AbilityArray.Zero with { Strength = (-2), Charisma = 5 };
-        AbilityArray expected = new(8, 10, 10, 10, 10, 15);
+        AbilityArray a = new(16, 10, 10, 10, 10, 10);
+        AbilityBoost flaw1 = AbilityBoost.CharismaFlaw;
+        AbilityBoost flaw2 = AbilityBoost.CharismaFlaw;
+        AbilityBoost boost = AbilityBoost.StrengthBoost;
+        AbilityArray expected = new(18, 10, 10, 10, 10, 6);
 
-        AbilityArray actual = x + y;
-
-        Assert.Equal(actual, expected);
-    }
-
-    [Fact]
-    public void TestAbilityArrayBoosts()
-    {
-        AbilityArray x = AbilityArray.Default with { Strength = 18, Wisdom = 16 };
-        AbilityArray boosts =
-            AbilityArray.StrengthBoost + AbilityArray.WisdomBoost + AbilityArray.CharismaFlaw;
-        // should only be adding 1 to Strength
-        AbilityArray expected = 
-            AbilityArray.Default with { Strength = 19, Wisdom = 18, Charisma = 8 };
-
-        AbilityArray actual = x + boosts;
+        AbilityArray actual = AbilityArray.ApplyVoluntaryFlaw(a, flaw1, flaw2, boost);
 
         Assert.Equal(actual, expected);
     }
